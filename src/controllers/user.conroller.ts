@@ -1,7 +1,7 @@
 import {Response, Request, NextFunction} from "express";
 
-import {User} from "../models";
-import {IUser, IMessage} from "../types";
+import {User} from "../../models";
+import {IUser, IMessage} from "../../types";
 import {userService} from "../services";
 
 class UserController {

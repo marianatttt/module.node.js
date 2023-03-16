@@ -1,5 +1,5 @@
 import { model, Schema } from "mongoose";
-import {EGenders} from "../enums";
+import {EGenders} from "../src/enums";
 
 
 

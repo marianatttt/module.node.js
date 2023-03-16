@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 
 
 import {userRouter} from "./routers";
-import {IError} from "./types";
+import {IError} from "../types";
 import {configs} from "./configs";
 import {authRouter} from "./routers";
 

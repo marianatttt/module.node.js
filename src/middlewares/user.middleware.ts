@@ -1,8 +1,8 @@
 import {NextFunction, Response, Request} from "express";
 
-import {User} from "../models";
-import {ApiError} from "../errors";
-import {UserValidator} from "../validators";
+import {User} from "../src/models";
+import {ApiError} from "../src/errors";
+import {UserValidator} from "../src/validators";
 import { isObjectIdOrHexString} from "mongoose";
 
 class UserMiddleware {
