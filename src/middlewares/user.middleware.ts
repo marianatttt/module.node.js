@@ -117,7 +117,8 @@ class UserMiddleware {
                     throw new ApiError(
                         `User not found`,422);
                 }
-                req.res.locals = user;
+                req.res.locals = {user};
+                req.res.locals.user = user;
 
                 next();
             } catch (e) {
@@ -144,6 +145,25 @@ class UserMiddleware {
             next(e);
         }
     }
+
+    public async isValidChangePassword(
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ): Promise<void> {
+        try {
+            const { error } = UserValidator.changeUserPassword.validate(req.body);
+
+            if (error) {
+                next (new ApiError(error.message, 400));
+            }
+
+            next();
+        } catch (e) {
+            next(e);
+        }
+    }
+
 
 }
 
