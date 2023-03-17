@@ -5,3 +5,5 @@ export interface ITokenPair {
 }
 
 export type ITokenPayload = Pick<IUser, "_id" | "name">;
+
+export type IActionTokenPayload = Pick<IUser, "_id">
