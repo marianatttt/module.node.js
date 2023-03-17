@@ -2,8 +2,8 @@ import nodemailer, {Transporter} from "nodemailer";
 import EmailTemplates from "email-templates";
 
 import {configs} from "../configs";
-import * as path from "path";
-import {allTemplates, EEmailActions} from "../constants/email.constants";
+import path from "node:path";
+import {allTemplates, EEmailActions} from "../constants";
 class EmailService {
     private transporter: Transporter;
     private templateParser;
