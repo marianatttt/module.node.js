@@ -1,7 +1,8 @@
 
 export enum EEmailActions {
     WELCOME ,
-    FORGOT_PASSWORD
+    FORGOT_PASSWORD,
+    ACTIVATE,
 }
 export const allTemplates: {
     [key: string]: { subject: string; templateName: string; }
@@ -14,6 +15,10 @@ export const allTemplates: {
     [EEmailActions.FORGOT_PASSWORD]: {
         subject: "We control your password",
         templateName: "forgotPassword"
+    },
+    [EEmailActions.ACTIVATE]: {
+        subject: "Activate!",
+        templateName: "activate"
     }
 }
 

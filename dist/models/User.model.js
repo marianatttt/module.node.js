@@ -18,10 +18,19 @@ const userSchema = new mongoose_1.Schema({
         type: String,
         required: [true, "password is required"]
     },
+    age: {
+        type: String,
+        required: false,
+    },
     gender: {
         type: String,
         enum: enums_1.EGenders
-    }
+    },
+    status: {
+        type: String,
+        enum: enums_1.EUserStatus,
+        default: enums_1.EUserStatus.inactive,
+    },
 }, {
     versionKey: false,
     timestamps: true

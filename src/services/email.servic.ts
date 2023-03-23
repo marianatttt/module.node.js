@@ -40,23 +40,26 @@ class EmailService {
         emailAction: EEmailActions,
         locals:Record<string, string> ={}
     ){
-        const templateInfo = allTemplates[emailAction];
-        locals.frontUrl = configs.FRONT_URL;
+        try {
 
+            const templateInfo = allTemplates[emailAction];
+            locals.frontUrl = configs.FRONT_URL;
 
-        const html = await this.templateParser.render(
-            templateInfo.templateName,
-            locals
-        )
-        return this.transporter.sendMail({
-            from:"No reply",
-            to: email,
-            subject:templateInfo.subject,
-            html
+            const html = await this.templateParser.render(
+                templateInfo.templateName,
+                locals
+            )
+            return this.transporter.sendMail({
+                from:"No reply",
+                to: email,
+                subject:templateInfo.subject,
+                html
 
-        })
+            })
+    } catch (e) {
+           console.error(e.max)
+        }
     }
-
 }
 
 export const emailService = new EmailService() ;

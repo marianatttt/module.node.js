@@ -7,6 +7,7 @@ import {userRouter} from "./routers";
 import {configs} from "./configs";
 import {authRouter} from "./routers";
 import {IError} from "./types";
+import {cronRunner} from "./crons";
 
 
 const app = express();
@@ -31,5 +32,6 @@ app.use((err:IError, req:Request, res:Response, next: NextFunction)=>{
 
 app.listen(configs.PORT, async () => {
   await mongoose.connect(configs.DB_URL);
+  cronRunner();
   console.log(`start${configs.PORT}`);
 });

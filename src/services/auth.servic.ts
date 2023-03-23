@@ -1,11 +1,11 @@
 import {ApiError} from "../errors";
 import {ICredentials, ITokenPair, ITokenPayload, IUser} from "../types";
 import {passwordService} from "./password.servic";
-import {ActionToken, Token, User} from "../models";
+import {ActionToken, OldPassword, Token, User} from "../models";
 import {tokenService} from "./token.servic";
 import {emailService} from "./email.servic";
 import {EEmailActions} from "../constants";
-import {EActionTokenType} from "../enums";
+import {EActionTokenType, EUserStatus} from "../enums";
 // import {smsService} from "./sms.servic";
 // import {ESmsActionEnum} from "../enums";
 
@@ -112,6 +112,8 @@ class AuthService{
                 {token: actionToken}
                 )
 
+            await OldPassword.create({_user_id:user._id, password:user.password})
+
         }catch (e) {
             throw new ApiError(e.message, e.status)
         }
@@ -125,13 +127,54 @@ class AuthService{
           const hashedPassword = await passwordService.hash(password);
 
             await User.updateOne({_id:id}, {password: hashedPassword} );
+            await ActionToken.deleteMany({
+                _user_id: id,
+                tokenType: EActionTokenType.forgot,
+            });
+
 
         }catch (e) {
             throw new ApiError(e.message, e.status)
         }
     }
-        
 
+    public async sendActiveToken(user:IUser):Promise<void>{
+        try {
+            const actionToken = tokenService.generateActionToken(
+                {_id:user._id},
+                EActionTokenType.activate)
+            await ActionToken.create(
+                {actionToken,
+                    tokenType:EActionTokenType.activate,
+                    _user_id:user._id
+                })
+
+            await emailService.sendMail(
+                user.email,
+                EEmailActions.ACTIVATE,
+                {token: actionToken}
+            )
+
+        }catch (e) {
+            throw new ApiError(e.message, e.status)
+        }
+    }
+    public async activate(userId: string):Promise<void>{
+        try{
+            await User.updateOne(
+                {_id:userId},
+                {$set:{status: EUserStatus.active}
+                });
+            await ActionToken.deleteMany({
+                _user_id: userId,
+                tokenType: EActionTokenType.activate,
+            })
+
+        }catch (e) {
+            throw new ApiError(e.message, e.status)
+
+        }
+    }
 }
 
 export const authService = new AuthService() ;

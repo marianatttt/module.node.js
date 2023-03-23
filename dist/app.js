@@ -8,6 +8,7 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const routers_1 = require("./routers");
 const configs_1 = require("./configs");
 const routers_2 = require("./routers");
+const crons_1 = require("./crons");
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
@@ -22,5 +23,6 @@ app.use((err, req, res, next) => {
 });
 app.listen(configs_1.configs.PORT, async () => {
     await mongoose_1.default.connect(configs_1.configs.DB_URL);
+    (0, crons_1.cronRunner)();
     console.log(`start${configs_1.configs.PORT}`);
 });
