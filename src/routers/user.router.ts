@@ -35,6 +35,14 @@ router.put('/:userId/avatar',
     userMiddleware.getByIdOrThrow,
     userController.uploadAvatar);
 
+router.delete(
+    "/:userId/avatar",
+    authMiddleware.checkAccessToken,
+    commonMiddleware.isIdValid("userId"),
+    userMiddleware.getByIdOrThrow,
+    userController.deleteAvatar
+);
+
 
 
 
