@@ -5,7 +5,8 @@ export interface IUser {
     email: string;
     password: string;
     gender: string;
-    phone: string
+    phone: string;
+    avatar?:string;
 }
 
 export interface IPaginationResponse<T>{

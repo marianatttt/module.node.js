@@ -31,6 +31,10 @@ const userSchema = new mongoose_1.Schema({
         enum: enums_1.EUserStatus,
         default: enums_1.EUserStatus.inactive,
     },
+    avatar: {
+        type: String,
+        required: false,
+    },
 }, {
     versionKey: false,
     timestamps: true

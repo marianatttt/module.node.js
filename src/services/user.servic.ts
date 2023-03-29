@@ -1,6 +1,8 @@
 import {IPaginationResponse, IUser} from "../types";
 import {ApiError} from "../errors";
 import {User} from "../models";
+import {UploadedFile} from "express-fileupload";
+import {s3Service} from "./s3.servic";
 
 class UserService {
  public async getAll ():Promise<IUser[]>{
@@ -66,6 +68,21 @@ class UserService {
          return User.findById(id);
      } catch (e) {
          throw new ApiError(e.message, e.status);
+     }
+ }
+
+ public async uploadAvatar(file:UploadedFile, userId: string):Promise<IUser>{
+     try{
+        const filePath = await s3Service.uplloadPhoto(file,'user', userId)
+
+         return await User.findByIdAndUpdate(
+             userId,
+             {avatar:filePath},
+             {new:true}
+         )
+     }catch (e) {
+         throw new ApiError(e.message, e.status);
+
      }
  }
 }

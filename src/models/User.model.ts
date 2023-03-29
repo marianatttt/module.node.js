@@ -32,6 +32,10 @@ const userSchema = new Schema ({
         enum: EUserStatus,
         default: EUserStatus.inactive,
     },
+    avatar:{
+        type:String,
+        required:false,
+    },
 
 },{
     versionKey:false,
