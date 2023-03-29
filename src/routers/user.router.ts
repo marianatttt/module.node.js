@@ -36,6 +36,8 @@ router.put('/:userId/avatar',
     userController.uploadAvatar);
 
 
+
+
 export const userRouter = router;
 
 

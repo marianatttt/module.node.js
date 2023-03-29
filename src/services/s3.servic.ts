@@ -1,4 +1,4 @@
-import {S3Client, PutObjectCommand} from "@aws-sdk/client-s3";
+import {S3Client, PutObjectCommand, DeleteObjectCommand} from "@aws-sdk/client-s3";
 import {extname} from "node:path";
 import { v4} from "uuid"
 
@@ -17,7 +17,7 @@ class S3Service{
          })
      )
      {}
-    public async uplloadPhoto(
+    public async uploadPhoto(
         file:UploadedFile,
         itemType:string,
         itemId:string):Promise<string>{
@@ -33,8 +33,24 @@ class S3Service{
             ACL:configs.AWS_S3_ALC,
         })
     );
-        return `${configs.AWS_S3_URL}/${filePath}`
+        // return `${configs.AWS_S3_URL}/${filePath}`
+        return filePath;
      }
+
+    public async deletePhoto(
+        filePath:string
+    ):Promise<void>{
+
+        await this.client.send(
+            new DeleteObjectCommand({
+                Bucket: configs.AWS_S3_NAME,
+                Key: filePath,
+
+            })
+        );
+    }
+
+
      private buildPath(
          fileName:string,
          itemType:string,
