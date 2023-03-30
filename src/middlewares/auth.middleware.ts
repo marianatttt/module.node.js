@@ -1,10 +1,10 @@
 import {NextFunction, Request, Response} from "express";
 
 import {ApiError} from "../errors";
-import {ActionToken, Token} from "../models";
+import {ActionToken, OldPassword, Token,} from "../models";
 import {passwordService, tokenService} from "../services";
 import {EActionTokenType, ETokenType} from "../enums";
-import {OldPassword} from "../models/Old.password.model";
+
 
 
 class AuthMiddleware {
@@ -128,6 +128,7 @@ class AuthMiddleware {
             next(e);
         }
     }
+
 
 }
 

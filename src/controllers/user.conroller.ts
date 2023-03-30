@@ -76,18 +76,20 @@ class UserController {
         next: NextFunction
     ): Promise<Response<IUser>> {
         try {
-            const userEntity = res.locals.user as IUser;
+            // const userEntity = res.locals.user as IUser;
+            const { userId } = req.params;
             const avatar = req.files.avatar as UploadedFile;
 
-            const user = await userService.uploadAvatar(avatar, userEntity);
+            const user = await userService.uploadAvatar(avatar, userId);
 
-            const response = userMapper.toResponse(user);
+            // const response = userMapper.toResponse(user);
 
-            return res.status(201).json(response);
+            return res.status(201).json(user);
         } catch (e) {
             next(e);
         }
     }
+
 
     public async deleteAvatar(
         req: Request,

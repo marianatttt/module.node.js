@@ -2,6 +2,7 @@ import {NextFunction, Response, Request} from "express";
 
 import {User} from "../models";
 import {ApiError} from "../errors";
+import {IUser} from "../types";
 
 class UserMiddleware {
     public async getByIdOrThrow(
@@ -12,6 +13,7 @@ class UserMiddleware {
         try {
             const {userId} = req.params;
             const user = await User.findById(userId);
+
 
             if (!user) {
                 throw new ApiError('User not found', 422);
@@ -54,7 +56,7 @@ class UserMiddleware {
     public getDynamicallyOrThrow(
         fieldName: string,
         from: "body" | "query" | "params" = "body",
-        dbField = fieldName
+        dbField: keyof IUser = "email"
     ) {
         return async (req: Request, res: Response, next: NextFunction) => {
             try {
@@ -67,7 +69,6 @@ class UserMiddleware {
                         `User not found`, 422);
                 }
                 req.res.locals = {user};
-                req.res.locals.user = user;
 
                 next();
             } catch (e) {

@@ -86,21 +86,23 @@ class UserService {
         }
     }
 
-    public async uploadAvatar(file: UploadedFile, user: IUser): Promise<IUser> {
-        try {
-            const filePath = await s3Service.uploadPhoto(file, "user", user._id);
+    public async uploadAvatar(file:UploadedFile, userId: string):Promise<IUser>{
+        try{
 
-            if (user.avatar) {
-                await s3Service.deletePhoto(user.avatar);
-            }
+            const filePath = await s3Service.uploadPhoto(file,"user", userId)
+
+            // if (user.avatar){
+            //     await s3Service.deletePhoto(user.avatar)
+            // }
 
             return await User.findByIdAndUpdate(
-                user._id,
-                { avatar: filePath },
-                { new: true }
-            );
-        } catch (e) {
+                userId,
+                {avatar:filePath},
+                {new:true}
+            )
+        }catch (e) {
             throw new ApiError(e.message, e.status);
+
         }
     }
     public async deleteAvatar(user: IUser): Promise<IUser> {

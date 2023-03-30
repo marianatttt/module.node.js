@@ -6,37 +6,51 @@ const enums_1 = require("../enums");
 const userSchema = new mongoose_1.Schema({
     name: {
         type: String,
+        index: true,
     },
     email: {
         type: String,
         unique: true,
-        required: [true, "email is required"],
+        required: [true, "Email is required"],
         trim: true,
-        lowercase: true
+        lowercase: true,
     },
     password: {
         type: String,
-        required: [true, "password is required"]
+        required: [true, "Password is required"],
     },
     age: {
-        type: String,
+        type: Number,
         required: false,
     },
     gender: {
         type: String,
-        enum: enums_1.EGenders
+        enum: enums_1.EGenders,
+    },
+    avatar: {
+        type: String,
+        required: false,
     },
     status: {
         type: String,
         enum: enums_1.EUserStatus,
         default: enums_1.EUserStatus.inactive,
     },
-    avatar: {
-        type: String,
-        required: false,
-    },
 }, {
     versionKey: false,
-    timestamps: true
+    timestamps: true,
 });
+userSchema.virtual("nameWithSurname").get(function () {
+    return `${this.name} Piatov`;
+});
+userSchema.methods = {
+    nameWithAge() {
+        return `${this.name} is ${this.age} years old.`;
+    },
+};
+userSchema.statics = {
+    async findByName(name) {
+        return this.find({ name });
+    },
+};
 exports.User = (0, mongoose_1.model)("user", userSchema);
