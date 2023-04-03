@@ -76,11 +76,11 @@ class UserController {
         next: NextFunction
     ): Promise<Response<IUser>> {
         try {
-            // const userEntity = res.locals.user as IUser;
-            const { userId } = req.params;
+            const userEntity = res.locals.user as IUser;
+            // const { userId } = req.params;
             const avatar = req.files.avatar as UploadedFile;
 
-            const user = await userService.uploadAvatar(avatar, userId);
+            const user = await userService.uploadAvatar(avatar, userEntity);
 
             // const response = userMapper.toResponse(user);
 
