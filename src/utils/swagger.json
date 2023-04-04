@@ -1,0 +1,53 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0",
+    "title": "sept-2022",
+    "description": "nodejs module for sept-2022",
+    "contact": {
+      "email": "marianamalynovska1988@gmail.com"
+    }
+  },
+  "paths": {
+    "/users/{userId}": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "get users by user id",
+        "operationId": "get user by id",
+        "responses": {
+          "200": {
+            "description": "everything is ok"
+          },
+          "400": {
+            "description": "no token provided"
+          }
+        },
+        "parameters": [
+          {
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "fhrjifn"
+            },
+            "name": "Authorization"
+          }
+        ]
+
+      },
+      "put": {
+        "tags": ["Users"],
+        "responses": {
+          "200": {}
+        }
+
+      },
+      "delete": {
+        "tags": ["Users"],
+        "responses": {
+          "200": {}
+        }
+      }
+    }
+  }
+}

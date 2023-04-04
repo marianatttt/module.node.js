@@ -1,8 +1,9 @@
 // import {locale} from "dayjs";
 
 import {Server, Socket} from "socket.io";
-
 const http = require('http')
+
+import * as swaggerUi from "swagger-ui-express";
 
 import express, {NextFunction, Request, Response} from "express";
 import mongoose from "mongoose";
@@ -13,6 +14,7 @@ import {configs} from "./configs";
 import {authRouter} from "./routers";
 import {IError} from "./types";
 import {cronRunner} from "./crons";
+import * as swaggerJson from "./utils/swagger.json"
 
 
 const app = express();
@@ -54,18 +56,18 @@ sockets.forEach((socket)=>{
   // socket.on('disconnect', ()=>{
   //   console.log(`${socket.id} disconnect`)
   // })
-
-  socket.on('join:room', ({roomId})=>{
-    socket.join(roomId)
-
-    socket
-        .to(roomId)
-        .emit('user:joined', {socketId:socket.id, action:'Joined'})
-  })
-    socket.on('leave:room', ({roomId})=>{
-      socket.leave(roomId);
-      socket.to(roomId).emit('user:leave',{socketId:socket.id, action:'Leave'} )
-    })
+  //
+  // socket.on('join:room', ({roomId})=>{
+  //   socket.join(roomId)
+  //
+  //   socket
+  //       .to(roomId)
+  //       .emit('user:joined', {socketId:socket.id, action:'Joined'})
+  // })
+  //   socket.on('leave:room', ({roomId})=>{
+  //     socket.leave(roomId);
+  //     socket.to(roomId).emit('user:leave',{socketId:socket.id, action:'Leave'} )
+  //   })
 })
 
 
@@ -74,6 +76,7 @@ sockets.forEach((socket)=>{
 
 app.use("/users", userRouter);
 app.use("/auth", authRouter);
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerJson))
 
 
 
