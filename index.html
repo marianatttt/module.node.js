@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src="https://cdn.socket.io/4.6.0/socket.io.min.js" integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<ul>
+  <li>first message</li>
+</ul>
+<input placeholder="message"/>
+<button>send message</button>
+
+<button class="join">join room</button>
+<button class="leave">leave room</button>
+
+
+
+
+
+<script>
+  const socket = io('http://localhost:5600', {
+    auth:{
+      token:'hdkeity2ndnck',
+    }
+  });
+
+  // socket.on('user:connected', (data)=>{
+  //   document.write(data.message)
+  // })
+
+  socket.on('message:get', (text)=>{
+  const li = document.createElement('li');
+  li.innerText=text;
+  document.querySelector('ul').appendChild(li)
+  })
+
+  document.querySelector('button').onclick = ()=>{
+    const text = document.querySelector('input').value
+    socket.emit('message:send', text)
+  }
+
+  const joinRoom = document.querySelector('.join')
+  const leaveRoom = document.querySelector('.leave')
+
+
+
+
+  joinRoom.onclick =()=>{
+    socket.emit('join:room', {roomId:1});
+  };
+
+  leaveRoom.onclick =()=> {
+    socket.emit('leave:room', {roomId: 1});
+  }
+
+
+    socket.on('user:joined', (data)=>{
+    document.write(JSON.stringify(data))
+  });
+
+  socket.on('user:leave', (data)=>{
+    document.write(JSON.stringify(data))
+  });
+
+
+
+
+</script>
+
+</body>
+</html>
